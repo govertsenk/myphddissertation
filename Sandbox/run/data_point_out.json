@@ -1,0 +1,17 @@
+{
+  "AddOutputVariable": {
+    "variable_name": "Zone Outdoor Air Wetbulb Temperature",
+    "reporting_frequency": "hourly",
+    "key_value": "*",
+    "applicable": true
+  },
+  "PowerOutage": {
+    "otg_date": "July 24",
+    "otg_hr": 12,
+    "otg_len": 48,
+    "applicable": true
+  },
+  "AddHourlyMeters": {
+    "applicable": true
+  }
+}
