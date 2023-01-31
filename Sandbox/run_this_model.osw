@@ -1,6 +1,6 @@
 {
-	"seed_file": "C:/devel/community-thermal-resilience/ControlledStudy/Sandbox/Models/bldg0002642-up00.osm",
-	"weather_file": "USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw",
+	"seed_file": "C:/devel/myphddissertation/Sandbox/Models/bldg0002642-up00.osm",
+	"weather_file": "2018_Worcester.epw",
 	"steps": [{
 			"measure_dir_name": "AddOutputVariable",
 			"arguments": {
@@ -34,14 +34,6 @@
 			"arguments": {
 				"variable_name": "Zone Outdoor Air Wetbulb Temperature",
 				"reporting_frequency": "hourly"
-			}
-		},
-		{
-			"measure_dir_name": "PowerOutage",
-    		"arguments": {
-    			"otg_date": "July 24",
-    			"otg_hr": "12",
-    			"otg_len": "48"
 			}
 		},
 		{
