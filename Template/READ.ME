@@ -1,5 +1,4 @@
-Folder Structure 
-	• ProjectName (in this case is Template)
+	• ProjectName
 		○ Measures
 			§ AddHoulyMeters
 			§ AddOutputVariable
@@ -12,7 +11,9 @@ Folder Structure
 			§ .csv named same as .osm files in /MODELS/
 Files
 Environment(.yml)
-	• Install the kg_env_310 Environment.yml or make your own :) and build on this one 
+	• create custom environment from this .yml file
+		○ follow guidance on how to here: https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-from-an-environment-yml-file
+		○ Add this environment to the batch_simulate.sh file instead of kg_env_310
 
 Weather File (.epw)
 	• USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw 
@@ -38,7 +39,10 @@ Open Studio Workflow (.osw - JSON)
 		
 Shell Scripts
 	• Run_this_model.sh (is written during run_simulations.py) 
-	• Batch_simulate.sh
+	• Batch_simulate.sh (EDIT TO FIT YOUR NEEDS)
 		○ Change output file paths 
 		○ Change environment if you need too
-Add python folders if you need to
+		○ Add python folders if you need to
+		○ Change partitions as needed (express for fast jobs <1 hr, short for < 24 hr )
+		○ Change nodes as needed
+		○ Change time as needed
