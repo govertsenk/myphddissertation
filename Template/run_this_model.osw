@@ -1,0 +1,43 @@
+{
+	"seed_file": "/work/able/resilience/Template/Models/bldg0002642-up00.osm",
+	"weather_file": "USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw",
+	"steps": [{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Mean Air Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Air Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Air Relative Humidity",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Outdoor Air Drybulb Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Outdoor Air Wetbulb Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddHourlyMeters"
+		} 
+	]
+}
