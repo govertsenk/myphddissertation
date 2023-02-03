@@ -1,4 +1,5 @@
-	• ProjectName
+Folder Structure
+	• ProjectName (in this case it's Template
 		○ Measures
 			§ AddHoulyMeters
 			§ AddOutputVariable
