@@ -2,6 +2,8 @@
 This github repository is the FREE and OPEN SOURCE code that I used for three research papers and my dissertation.
 The links and pdfs of these documents will be included upon publication and acceptance.
 
+P.S. This is a work in progress :) 
+
 # thermal_modeling
 Start by editing the **metadata_downloader.py** file by setting your:
 - file_path
