@@ -1,6 +1,7 @@
 {
 	"seed_file": "bldg#######.osm",
 	"weather_file": "weather.epw",
+	"run_directory": "outputpath",
 	"steps": [{
 			"measure_dir_name": "AddOutputVariable",
 			"arguments": {
@@ -38,6 +39,8 @@
 		},
 		{
 			"measure_dir_name": "AddHourlyMeters"
-		} 
+		},
+		{   "measure_dir_name": "OutputToCSV"
+		}
 	]
 }
