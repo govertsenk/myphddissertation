@@ -64,12 +64,6 @@ class OutputToCSV < OpenStudio::Measure::ModelMeasure
 
     outputFiles = model.getOutputControlFiles
     outputFiles.setOutputCSV(true)
-        puts(outputFiles)
-
-    #     #runner.registerFinalCondition("CSV output files have been added to the model.")
-    # end 
-    # output_file_path = "#{File.dirname(__FILE__)}/new_model.osm"
-    # model.save(output_file_path, true)
     return true
   end
 end
