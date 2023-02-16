@@ -8,16 +8,25 @@ import datetime
 scenario = ["SSP119"]#,"SSP126","SSP245","SSP370","SSP585"]
 years = ["2025"]#,"2050"."2075","2075"]
 percent = ["5%"]#,"50%","95%"]
-run = # range 0 -99
+run = ["0"] # range 0 -99
 og_wd = os.getcwd()
 data_file_path  =  str(og_wd)
 data_file_path = data_file_path.replace(os.sep, '/')
 models_path = data_file_path + '/Models/'
 schedules_path = data_file_path + '/Schedule Files/'
+weather_path = data_file_path + '/Weather Files/'
 original_osm = "bldg#######.osm"
 original_weather = "weather.epw"
 original_schedule_name = "schedules.csv"
 original_output_path = "output_path"
+
+# TODO:
+# Identify Weather/Folder Names
+weather_names = []
+for each_file in os.listdir(weather_path):
+    # check only text files
+    if each_file.endswith('.epw'):
+        weather_names.append(each_file)
 
 # Identify all the models
 models = []
@@ -27,8 +36,16 @@ for model in os.listdir(models_path):
     if model.endswith('.osm'):
         models.append(model)
 
-# Check that each weather file exists and make output folders
-# TODO: remove the 
+# break for loops into functions                 
+# - check that weather files exist (error and return)
+# - create output folders (/scenario_year_#%_r##/(6000) ... /bldg### (315))
+# - copy schedule into output folder as 'schedules.csv'
+# - copy weather into output folder as 'weather.epw'
+# - save openstudio run folder to output folder in .osw 
+# - create and save run_this_model.osw file into output folder
+
+# have function with multiple inputs to eliminate 
+
 for each_scenario in scenario:
     for each_year in years:
         for each_percent in percent:
