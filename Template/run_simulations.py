@@ -13,7 +13,8 @@ schedules_path = data_file_path + '/Schedule Files/'
 original_osm = "bldg#######.osm"
 original_weather = "weather.epw"
 original_schedule_name = "schedules.csv"
-version = "trial_1" # this is good to keep track of your versions
+original_output_path = "outputpath"
+version = "trial_2" # this is good to keep track of your versions
 
 # Modfiy weather file name here:
 new_weather = "USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw"
@@ -83,6 +84,9 @@ for each_study in study:
 
             # replace with new weather file (baseline)
             data = data.replace(original_weather,new_weather)
+            
+            # replace with new output path
+            data = data.replace(original_output_path,new_path)
         
         with open(data_file_path + "/run_this_model.osw",'w') as file:
             file.write(data)
