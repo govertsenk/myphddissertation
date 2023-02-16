@@ -1,6 +1,7 @@
 {
 	"seed_file": "/work/able/resilience/Template/Models/bldg0002642-up00.osm",
 	"weather_file": "USA_MA_Worcester.Rgnl.AP.725095_TMY3.epw",
+	"run_directory": "/work/able/resilience/Template/Outputs/trial_2/baseline/bldg0002642-up00",
 	"steps": [{
 			"measure_dir_name": "AddOutputVariable",
 			"arguments": {
@@ -38,6 +39,8 @@
 		},
 		{
 			"measure_dir_name": "AddHourlyMeters"
-		} 
+		},
+		{   "measure_dir_name": "OutputToCSV"
+		}
 	]
 }
