@@ -1,0 +1,47 @@
+{
+	"seed_file": "bldg#######.osm",
+	"weather_file": "weather.epw",
+	"run_directory": "outputpath",
+    "measure_paths": ["measurespath"],
+	"steps": [{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Mean Air Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Air Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Air Relative Humidity",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Outdoor Air Drybulb Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddOutputVariable",
+			"arguments": {
+				"variable_name": "Zone Outdoor Air Wetbulb Temperature",
+				"reporting_frequency": "hourly"
+			}
+		},
+		{
+			"measure_dir_name": "AddHourlyMeters"
+		},
+		{   "measure_dir_name": "OutputToCSV"
+		}
+	]
+}

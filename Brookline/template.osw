@@ -1,0 +1,12 @@
+{
+	"seed_file": "bldg#######.osm",
+	"weather_file": "weather.epw",
+	"run_directory": "output_path",
+    "measure_paths": ["C:/devel/myphddissertation/Brookline/measures/"],
+	"steps": [{
+			"measure_dir_name": "AddHourlyMeters"
+		},
+		{   "measure_dir_name": "OutputToCSV"
+		} 
+	]
+}
