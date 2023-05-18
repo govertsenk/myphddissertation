@@ -1,0 +1,6 @@
+**/*.csv
+**/*.parquet
+**/*.osm
+**/*.epw
+Data/PUMAS/*
+Output/*
