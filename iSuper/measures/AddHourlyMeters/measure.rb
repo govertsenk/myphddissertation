@@ -21,8 +21,9 @@ class AddHourlyMeters < OpenStudio::Ruleset::ModelUserScript
       return false
     end
 	
-    meter_names = ["Electricity:Facility","ExteriorLights:Electricity","InteriorLights:Electricity","InteriorEquipment:Electricity","ExteriorEquipment:Electricity","Fans:Electricity","Pumps:Electricity","Heating:Electricity","Cooling:Electricity","HeatRejection:Electricity","Humidifer:Electricity","HeatRecovery:Electricity","WaterSystems:Electricity","Cogeneration:Electricity","Gas:Facility","InteriorEquipment:Gas","ExteriorEquipment:Gas","Heating:Gas","Cooling:Gas","WaterSystems:Gas","Cogeneration:Gas","DistrictHeating:Facility","DistrictCooling:Facility"];
-	
+    meter_names = ["Electricity:Facility","NaturalGas:Facility","Cumulative,NaturalGas:Facility","NaturalGas:HVAC","Heating:NaturalGas","Cooling:NaturalGas","WaterSystems:NaturalGas"];
+	# Electricity: ,"Electricity:HVAC","Heating:Electricity","Cooling:Electricity","WaterSystems:Electricity",
+    # removed: "ExteriorLights:Electricity","InteriorLights:Electricity","InteriorEquipment:Electricity","ExteriorEquipment:Electricity","Fans:Electricity","Pumps:Electricity","HeatRejection:Electricity","Humidifer:Electricity","HeatRecovery:Electricity","Cogeneration:Electricity","InteriorEquipment:Gas","ExteriorEquipment:Gas","Cogeneration:Gas","DistrictHeating:Facility","DistrictCooling:Facility"
     meters = model.getOutputMeters
     #reporting initial condition of model
     runner.registerInitialCondition("The model started with #{meters.size} meter objects.")

@@ -14,12 +14,13 @@ original_output_path = "output_path"
 og_wd = os.getcwd()
 og_wd = str(og_wd).replace(os.sep, '/')
 data_file_path = og_wd + '/Data/'
+weather_file_path = data_file_path + 'Weather/'
 template_osw = og_wd + "/template.osw"
 puma = 'G25003400'
 
 
 # Asyncio Definitions:
-async def process_model(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, this_weather,each_model):
+async def process_model(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, md,each_model):
     # copy the osw template and paste into folder
     model_output_path = puma_output_path + "/" + each_model
     this_osw = model_output_path + "/" + each_model + ".osw"
@@ -29,6 +30,8 @@ async def process_model(template_osw, schedules_path, models_path, original_osm,
     # Move Schedule into folder as 'schedules.csv'
     schedule_path = schedules_path + each_model + '.csv'
     shutil.copyfile(schedule_path,model_output_path + "/schedules.csv")
+    
+    this_weather = weather_file_path + str(md['in.nhgis_county_gisjoin'].loc[md['bldg_id']==each_model].item()) + '.epw'
 
     # open the osw file as a readable file
     with open(this_osw,'r') as file:
@@ -48,10 +51,10 @@ async def process_model(template_osw, schedules_path, models_path, original_osm,
     with open(this_osw,'w') as file:
         file.write(data)
 
-async def process_models(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, this_weather,models):
+async def process_models(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, md,models):
     tasks = []
     for each_model in models:
-        task = asyncio.create_task(process_model(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path,this_weather, each_model))
+        task = asyncio.create_task(process_model(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path,md, each_model))
         tasks.append(task)
     await asyncio.gather(*tasks)
 
@@ -76,7 +79,7 @@ async def run_models_with_executor(executor, puma_output_path, these_models):
 
 async def main():
     # Call the main function
-    await process_models(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, this_weather, models)
+    await process_models(template_osw, schedules_path, models_path, original_osm, original_weather, original_output_path, puma_output_path, md, models)
 
     # Create a thread pool executor
     max_workers = 6  # Set the maximum number of concurrent subprocesses
@@ -98,21 +101,23 @@ if os.path.isdir(puma_path):
                 #this_weather = puma_path + '/Weather/TMY3/' + str(os.listdir(puma_path + '/Weather/TMY3/')[0])
                 #outputs_path = og_wd + '/Output/' + 
         # Else: 
-    this_weather = puma_path + '/Weather/TMY3/' + str(os.listdir(puma_path + '/Weather/TMY3/')[0])
-    
+    md = pd.read_csv(puma_path + '/Models_Metadata_' + puma + '.csv')
+    md['bldg_id'] = md['bldg_id'].astype(str).str.zfill(7)
+    md['bldg_id'] = 'bldg' + md['bldg_id']
+
     # Make output folder:
     outputs_path = og_wd + '/Output/'
     if not os.path.exists(outputs_path):
             os.makedirs(outputs_path)
     
-    outputs_path = og_wd + '/Output/AMY/'
+    # outputs_path = og_wd + '/Output/AMY/'
 
-    if not os.path.exists
-           os.makedirs(outputs_path)
-    outputs_path = og_wd + '/Output/TMY3'
+    # if not os.path.exists:
+    #        os.makedirs(outputs_path)
+    # outputs_path = og_wd + '/Output/TMY3'
 
-    if not os.path.exists
-           os.makedirs(outputs_path)      
+    # if not os.path.exists
+    #        os.makedirs(outputs_path)      
     puma_output_path = outputs_path + puma
     if not os.path.exists(puma_output_path):
             os.makedirs(puma_output_path)
@@ -123,9 +128,11 @@ if os.path.isdir(puma_path):
     for model in os.listdir(models_path):
         # check only text files
         if model.endswith('.osm'):
-            models.append(model[:-4])
-        model_output_path = puma_output_path + '/' + model[:-4]
+            model_name = model[:-4]
+            models.append(model_name)
+        model_output_path = puma_output_path + '/' + model_name
         if not os.path.exists(model_output_path):
                 os.makedirs(model_output_path)
+    # models = [models[0]] # test on one first 
     asyncio.run(main())
 
