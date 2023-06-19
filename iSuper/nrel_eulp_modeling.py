@@ -228,7 +228,7 @@ if not os.path.isfile(data_folder + 'metadata.parquet'):
 
 # SCE 2010 Pumas:
 # sce_pumas = pd.read_csv(data_folder + "SCE_PUMA_2010.csv")
-pumas = ['G25003306','G25003400']
+pumas = ['G25003306']#,'G25003400']
 
 for puma in pumas:
     # Make a folder for each PUMA 
@@ -249,8 +249,6 @@ for puma in pumas:
     # Subfolder Weather is in Data
     if not os.path.exists(puma_path + 'Weather'):
         os.makedirs(puma_path + 'Weather')   
-    # if not os.path.exists(puma_path + 'Weather/TMY/'):
-    #     os.makedirs(puma_path + 'Weather/TMY/') 
 
     md = pd.read_parquet(data_folder + "metadata.parquet")
     md = md.loc[md['in.puma']==puma]
@@ -292,9 +290,6 @@ for puma in pumas:
             os.remove(os.path.join(download_folder+file))
         if file.endswith(".epw"):
             os.remove(os.path.join(download_folder+file))
-    # current_time = time.time()
-    # download_time = (current_time - start_time)/60
-    # print(f"Download time: {download_time} minutes")
 
     # # RUNNING
     # check if the current file is a directory
@@ -324,12 +319,6 @@ for puma in pumas:
         # Test
         # models = [models[0]]
         asyncio.run(simulate())
-    # current_time = time.time()
-    # simulate_time = (current_time - start_time)/60
-    # print(f"Run time: {simulate_time} total minutes")
-
-    # simulate_time = simulate_time - download_time
-    # print(f"Simulate time: {simulate_time} minutes since Download")
 
     ## PROCESSING : 
     # TEST
@@ -362,6 +351,22 @@ for puma in pumas:
     gas_cool = pd.DataFrame(columns = models)
     # # Water       "WaterSystems:NaturalGas"]
     gas_water = pd.DataFrame(columns = models)
+    
+    # Propane:      "Propane:Facility"
+    propane_total = pd.DataFrame(columns = models)
+    # # HVAC:       "Propane:HVAC"
+    propane_hvac = pd.DataFrame(columns = models)
+    # # Heating:    "Heating:Propane"
+    propane_heat = pd.DataFrame(columns = models)
+    
+    # Fuel Oil:     "FuelOilNo1:Facility"
+    oil_total = pd.DataFrame(columns = models)
+    # # Heating:    "Heating:FuelOilNo1"
+    oil_heat = pd.DataFrame(columns = models)
+    # # Water:      "WaterSystems:FuelOilNo1"
+    oil_water = pd.DataFrame(columns = models)
+
+    
     for each_model in models:
         # Read the baseline output file
         data = pd.read_csv(puma_output_path + '/' + each_model + '/eplusout.csv')
@@ -411,6 +416,25 @@ for puma in pumas:
         if 'WaterSystems:NaturalGas [J](Hourly)' in data:
             gas_water[each_model] = data['WaterSystems:NaturalGas [J](Hourly)']
         
+        # Propane:      "Propane:Facility"
+        if 'Propane:Facility [J](Hourly)' in data:
+            propane_total[each_model] = data['Propane:Facility [J](Hourly)']
+        # # HVAC:       "Propane:HVAC"
+        if 'Propane:HVAC [J](Hourly)' in data:
+            propane_hvac[each_model] = data['Propane:HVAC [J](Hourly)']
+        # # Heating:    "Heating:Propane"
+        if 'Heating:Propane [J](Hourly)' in data:
+            propane_heat[each_model] = data['Heating:Propane [J](Hourly)']
+            
+        # Fuel Oil:     "FuelOilNo1:Facility"
+        if 'FuelOilNo1:Facility [J](Hourly)' in data:
+            oil_total[each_model] = data['FuelOilNo1:Facility [J](Hourly)']
+        # # Heating:    "Heating:FuelOilNo1"
+        if 'Heating:FuelOilNo1 [J](Hourly)' in data:
+            oil_heat[each_model] = data['Heating:FuelOilNo1 [J](Hourly)']
+        # # Water:      "WaterSystems:FuelOilNo1"
+        if 'WaterSystems:FuelOilNo1 [J](Hourly)' in data:
+            oil_water[each_model] = data['WaterSystems:FuelOilNo1 [J](Hourly)']
 
     # EXPORT METER RESULTS
         # Electricity:  "Electricity:Facility"
@@ -455,15 +479,36 @@ for puma in pumas:
         gas_water = gas_water.set_index(data['Date/Time'])
         gas_water.to_csv(summary_path + "/gas_water.csv",index=True)
 
+    # Propane:      "Propane:Facility"
+    if not propane_total.empty:
+        propane_total = propane_total.set_index(data['Date/Time'])
+        propane_total.to_csv(summary_path + "/propane_total.csv",index=True)
+    # # HVAC:       "Propane:HVAC"
+    if not propane_hvac.empty:
+        propane_hvac = propane_hvac.set_index(data['Date/Time'])
+        propane_hvac.to_csv(summary_path + "/propane_hvac.csv",index=True)
+    # # Heating:    "Heating:Propane"
+    if not propane_heat.empty:
+        propane_heat = propane_heat.set_index(data['Date/Time'])
+        propane_heat.to_csv(summary_path + "/propane_heat.csv",index=True)
+    
+    # Fuel Oil:     "FuelOilNo1:Facility"
+    if not oil_total.empty:
+        oil_total = oil_total.set_index(data['Date/Time'])
+        oil_total.to_csv(summary_path + "/oil_total.csv",index=True)
+    # # Heating:    "Heating:FuelOilNo1"
+    if not oil_heat.empty:
+        oil_heat = oil_heat.set_index(data['Date/Time'])
+        oil_heat.to_csv(summary_path + "/oil_heat.csv",index=True)
+    # # Water:      "WaterSystems:FuelOilNo1"
+    if not oil_water.empty:
+        oil_water = oil_water.set_index(data['Date/Time'])
+        oil_water.to_csv(summary_path + "/oil_water.csv",index=True)
+        
     # DELETE FOLDERS
     asyncio.run(delete_all_folders(data_folder,output_folder,puma))
 
-# current_time = time.time()
-# process_time = (current_time - start_time)/60
-# print(f"Run time: {process_time} total minutes")
-    
-# process_time = process_time - download_time
-# print(f"Process time: {process_time} minutes since Simulation")
+
             
 
 

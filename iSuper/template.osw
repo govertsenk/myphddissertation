@@ -2,7 +2,7 @@
 	"seed_file": "bldg#######.osm",
 	"weather_file": "weather.epw",
 	"run_directory": "output_path",
-    "measure_paths": ["C:/devel/myphddissertation/Brookline/measures/"],
+    "measure_paths": ["C:/devel/myphddissertation/iSuper/measures/"],
 	"steps": [{
 			"measure_dir_name": "AddHourlyMeters"
 		},
