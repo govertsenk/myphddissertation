@@ -1,0 +1,123 @@
+import os
+os.getcwd()  
+fn = []
+for file in os.listdir():
+  # check only docx files
+  if file.endswith('.docx'):
+    fn.append(file) 
+for iFile in file_names:
+  # Import existing transcript as a word document
+  from docx import Document
+  document = Document(iFile)
+  # Create a new document where the new formated transcript will be saved
+  new_document = Document()
+  # Add and apply speaker title and quote styles 
+  from docx.enum.style import WD_STYLE_TYPE
+  from docx.shared import RGBColor
+  from docx.shared import Pt 
+  # Researcher Title
+  styles = new_document.styles
+  style = styles.add_style('Researcher Title',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(0,0,0) # Black
+  style.font.size = Pt(16) # Size 16
+  style.hidden = False
+  style.quick_style = True
+  # Researcher Quote
+  style = styles.add_style('Researcher Quote',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.italic = True # Italic
+  style.font.color.rgb = RGBColor(0,0,0) # Black
+  styles['Researcher Title'].next_paragraph_style = styles['Researcher Quote']
+  style.hidden = False
+  style.quick_style = True
+  # Facilitator Title
+  style = styles.add_style('Facilitator Title',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(143,143,143) # Grey
+  style.font.italic = True # Italic
+  style.font.size = Pt(16) # Size 16
+  style.hidden = False
+  style.quick_style = True
+  # Facilitator Quote
+  style = styles.add_style('Facilitator Quote',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.italic = True # Italic
+  style.font.color.rgb = RGBColor(143,143,143) # Grey
+  styles['Facilitator Title'].next_paragraph_style = styles['Facilitator Quote']
+  style.hidden = False
+  style.quick_style = True
+  # Particpant Title
+  style = styles.add_style('Participant Title',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(105,164,216) # Blue
+  style.font.size = Pt(16) # Size 16
+  style.hidden = False
+  style.quick_style = True
+  # Particpant Quote
+  style = styles.add_style('Participant Quote',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(105,164,216) # blac
+  styles['Participant Title'].next_paragraph_style = styles['Participant Quote']
+  style.hidden = False
+  style.quick_style = True
+  # Noise Title
+  style = styles.add_style('Noise Title',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(143,143,143) # Grey
+  style.font.bold = True # bold
+  style.font.size = Pt(16) # Size 16
+  style.hidden = False
+  style.quick_style = True
+  # Noise Quote
+  style = styles.add_style('Noise Quote',WD_STYLE_TYPE.PARAGRAPH) # name
+  style.font.color.rgb = RGBColor(143,143,143) # Grey
+  style.font.bold = True # bold
+  styles['Noise Title'].next_paragraph_style = styles['Participant Quote']
+  style.hidden = False
+  style.quick_style = True
+  # Transfer the transcript to new document with correct styles for each title and quote
+  P = 0
+  for paragraph in document.paragraphs:
+    # if the paragraph is from a researcher
+    if (paragraph.text.startswith('Researcher') is True ):
+      new_paragraph = new_document.add_paragraph(paragraph.text,style='Researcher Title')
+      P = P + 1
+      new_paragraph = new_document.add_paragraph(document.paragraphs[P].text, style = 'Researcher Quote')
+      P = P + 1
+    # if the paragraph is from a facilitator
+    elif (paragraph.text.startswith('Facilitator') is True):
+      # 101 gave concent so they are a participant in this special case
+      if (paragraph.text == 'Facilitator 101:'):
+        new_paragraph = new_document.add_paragraph(paragraph.text,style='Participant Title')
+        P = P + 1
+        new_paragraph = new_document.add_paragraph(document.paragraphs[P].text,style = 'Participant Quote')
+        P = P + 1
+      # 105 gave concent so they are a participant in this special case
+      elif (paragraph.text == 'Facilitator 105:'):
+        new_paragraph = new_document.add_paragraph(paragraph.text,style='Participant Title')
+        P = P + 1
+        new_paragraph = new_document.add_paragraph(document.paragraphs[P].text,style = 'Participant Quote')
+        P = P + 1
+      # the rest are normal facilitators
+      else:
+        new_paragraph = new_document.add_paragraph(paragraph.text,style='Facilitator Title')
+        P = P + 1
+        new_paragraph = new_document.add_paragraph(document.paragraphs[P].text, style = 'Facilitator Quote')
+        P = P + 1
+    # if the paragraph is from a participant
+    elif(paragraph.text.startswith('Participant') is True):
+      new_paragraph = new_document.add_paragraph(paragraph.text,style='Participant Title')
+      P = P + 1
+      new_paragraph = new_document.add_paragraph(document.paragraphs[P].text,style = 'Participant Quote')
+      P = P + 1
+    # if the paragraph is from a child
+    elif(paragraph.text == 'Child:'):
+      new_paragraph = new_document.add_paragraph(paragraph.text,style = 'Noise Title')
+      P = P + 1
+      new_paragraph = new_document.add_paragraph(document.paragraphs[P].text, style = 'Noise Quote')
+      P = P + 1
+    # if the paragraph is from an unknown speaker
+    elif(paragraph.text == 'Unknown:'):
+      new_paragraph = new_document.add_paragraph(paragraph.text,style='Noise Title')
+      P = P + 1
+      new_paragraph = new_document.add_paragraph(document.paragraphs[P].text, style = 'Noise Quote')
+      P = P + 1
+    # remove the 'part X of X from the document
+    elif(paragraph.text.startswith('PART') is True):
+      P = P + 1      
+  # Save File as the formatted transcript
+  new_document.save('Formatted_' + iFile)  
