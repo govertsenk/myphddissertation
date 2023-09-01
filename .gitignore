@@ -1,10 +1,5 @@
-*.csv
 *.eso
 *.sql
 *.audit
 *.osm
 *.exe
-
-/Worcester/trial/
-*.epw
-*.err
